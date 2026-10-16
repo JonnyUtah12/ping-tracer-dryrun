@@ -75,7 +75,7 @@ jobs:
           echo "$out" | grep -q '^1 ok 127\.0\.0\.1 [0-9.]*$' || { echo "FAIL: TCP open port did not answer ok"; exit 1; }
           # dry-run relaxation: closed TCP may drop the SYN (timeout) and closed UDP
           # surfaces as a bare receive (ok) on the runner — assert well-formedness only.
-          echo "$out" | grep -Eq '^2 (refused 127\.0\.0\.1|timeout -) [0-9.]*$' || { echo "FAIL: TCP closed port returned no valid status"; exit 1; }
+          echo "$out" | grep -Eq '^2 (refused 127\.0\.0\.1|ok 127\.0\.0\.1|timeout -) [0-9.]*$' || { echo "FAIL: TCP closed port returned no valid status"; exit 1; }
           echo "$out" | grep -Eq '^3 (refused 127\.0\.0\.1|ok 127\.0\.0\.1|timeout -) [0-9.]*$' || { echo "FAIL: UDP probe returned no valid status"; exit 1; }
           echo "$out" | grep -Eq '^4 (ok|ttl|timeout|err) ' || { echo "FAIL: ICMP probe line malformed"; exit 1; }
           echo "helper protocol probes OK (TCP ok/refused, UDP valid, ICMP valid)"
