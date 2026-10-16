@@ -86,6 +86,7 @@ test('UDP target: path length discovered via port-unreachable; steady state prob
     throw e;
   } finally {
     srv.kill();
-    fs.rmSync(dataDir, { recursive: true, force: true });
+    await new Promise(r => { srv.on('exit', r); setTimeout(r, 3000); }); // dry-run patch: Windows holds the db lock until the child is gone
+    fs.rmSync(dataDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 250 });
   }
 });
